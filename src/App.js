@@ -30,6 +30,7 @@ function App() {
     loadData();
   }, []);
   
+  // Add Todo
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -55,12 +56,29 @@ function App() {
     setTime('');
   }
   
+  // DELETE To do
   const handleDelete = async(id) => {
-    await fetch(API + "/todos" + id,{
+    await fetch(API + "/todos/" + id,{
       method: "DELETE",
     });
 
     setTodos((prevState) => prevState.filter((todo) => todo.id !== id))
+  }
+
+  const handleEdit = async(todo) => {
+    todo.done = !todo.done;
+
+    const data = await fetch(API + "/todos/" + todo.id, {
+      method: "PUT",
+      body: JSON.stringify(todo),
+      headers:{
+        "Content-Type": "application/json",
+      },
+    });
+
+    setTodos((prevState) =>
+      prevState.map((t) => (t.id === data.id ? (t = data) : t)
+    ));
   }
 
   if(loading){
@@ -70,9 +88,10 @@ function App() {
   return (
     <div className="App">
       <div className='todo-header'>
-        <h1>React Todo</h1>
+        <h1>React - To do</h1>
       </div>
 
+        {/* Form todos */}
         <div className='form-todo'>
           <h2>Insira a sua próxima tarefa</h2>
           <form onSubmit={handleSubmit}>
@@ -99,15 +118,18 @@ function App() {
             <input type="submit" value="Criar tarefa"/>
           </form>
         </div>
+
+
+        {/* List todos */}
         <div className='list-todo'>
           <h2>Lista de tarefas:</h2>
           {todos.length === 0 && <p>Não há tarefas!</p>}
           {todos.map((todo) => (
             <div className='todo' key={todo.id}>
-              <h3 className={todo.done ? "todo-done" : ""}>{todo.title}</h3>
+              <h3 className={todo.done ? "todo-done" : ""}>Tarefa: {todo.title}</h3>
               <p>Duração: {todo.time}H</p>
               <div className='actions'>
-                <span>
+                <span onClick={() => handleEdit(todo)}>
                     {!todo.done ? <BsBookmarkCheck/> : <BsBookmarkCheckFill />}
                 </span>
                 <BsTrash onClick={() => handleDelete(todo.id)} />
