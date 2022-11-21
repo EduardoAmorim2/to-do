@@ -2,6 +2,7 @@
   "name": "todo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://EduardoAmorim2.github.io/to-do-react",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -14,6 +15,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -21,7 +24,7 @@
     "serve": "json-server --watch data/db.json --port 5000"
   },
   "eslintConfig": { 
-    "extends": [
+    "extends": [ 
       "react-app",
       "react-app/jest"
     ]

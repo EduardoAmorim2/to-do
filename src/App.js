@@ -30,7 +30,7 @@ function App() {
     loadData();
   }, []);
   
-  // Add Todo
+  // Add To do in array
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -42,6 +42,7 @@ function App() {
       done: false,
     }
 
+    // Adicionar to do no BD via API
     await fetch(API + "/todos",{
       method: "POST",
       body: JSON.stringify(todo),
@@ -65,6 +66,7 @@ function App() {
     setTodos((prevState) => prevState.filter((todo) => todo.id !== id))
   }
 
+  // Check to do 
   const handleEdit = async(todo) => {
     todo.done = !todo.done;
 
@@ -91,38 +93,30 @@ function App() {
         <h1>React - To do</h1>
       </div>
 
-        {/* Form todos */}
+        {/* Form to do */}
         <div className='form-todo'>
           <h2>Insira a sua próxima tarefa</h2>
           <form onSubmit={handleSubmit}>
+
             <div className='form-control'>
               <label htmlFor='title'>O que você vai fazer?</label>
-              <input 
-              type='text' 
-              name='title' 
-              placeholder='Título da tarefa' 
-              onChange={(e) => setTitle(e.target.value)} 
-              value={title || ""} 
-              required/>
+              <input type='text' name='title' placeholder='Título da tarefa' onChange={(e) => setTitle(e.target.value)} value={title || ""} required/>
             </div>
+
             <div className='form-control'>
               <label htmlFor='time'>Duração:</label>
-              <input 
-              type='text' 
-              name='time' 
-              placeholder='Tempo estimado (em horas)' 
-              onChange={(e) => setTime(e.target.value)} 
-              value={time || ""} 
-              required/>
+              <input type='text' name='time' placeholder='Tempo estimado (em horas)' onChange={(e) => setTime(e.target.value)} value={time || ""} required/>
             </div>
+
             <input type="submit" value="Criar tarefa"/>
           </form>
         </div>
 
 
-        {/* List todos */}
+        {/* List to do */}
         <div className='list-todo'>
           <h2>Lista de tarefas:</h2>
+
           {todos.length === 0 && <p>Não há tarefas!</p>}
           {todos.map((todo) => (
             <div className='todo' key={todo.id}>
@@ -137,6 +131,8 @@ function App() {
             </div>
           ))}
         </div>
+
+
     </div>
   );
 }
